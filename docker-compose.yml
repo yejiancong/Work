@@ -1,0 +1,33 @@
+version: '2'
+services:
+  # lb
+  lb:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./lb/proxy.conf:/etc/nginx/proxy.conf:ro
+
+  # database
+  mysql:
+    image: mysql:5.6
+    expose:
+      # Allow client to access 3306
+      - "3306"
+    volumes:
+      # NOTE: your data will be stored in ./mysql
+      - ./app/mysql:/var/lib/mysql
+      #- ./mysql:/etc/mysql
+    environment:
+        #- MYSQL_ROOT_PASSWORD=your_mysql_password
+      - MYSQL_ROOT_PASSWORD=123456
+
+  redis:
+      build: ./redis
+      expose:
+        - "6379"
+      volumes:
+        - "./app/redis/data:/data"
+      environment:
+        - REDIS_PASSWORD=123456

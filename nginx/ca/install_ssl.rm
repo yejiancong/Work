@@ -1,0 +1,5 @@
+# 配置ssl
+
+```
+openssl req -x509 -nodes -days 36500 -newkey rsa:2048 -keyout server.key -out server.crt
+```
