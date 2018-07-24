@@ -1,0 +1,53 @@
+version: '2'
+services:
+  nginx:
+    image: nginx:stable
+    ports:
+      - "80"
+    networks:
+      - work_default
+    volumes:
+      # app
+      - ${NAS_PATH}/app/src/localhost:/var/www/html
+      - ${NAS_PATH}/app/log/nginx:/var/log/nginx
+      # nginx configs
+      - ${NAS_PATH}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${NAS_PATH}/app/src/localhost/docker-config/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      # certificates
+      - ${NAS_PATH}/nginx/ca/server.crt/:/etc/nginx/server.crt:ro
+      - ${NAS_PATH}/nginx/ca/server.key/:/etc/nginx/server.key:ro
+    environment:
+      - TZ=Asia/Shanghai
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+    links:
+      - 'fpm:fpm_host'
+    extra_hosts:
+       - "api_host:192.168.1.155"
+
+  # php-fpm
+  fpm:
+    build: ${NAS_PATH}/php-fpm
+    ports:
+      - "9000"
+    networks:
+      - work_default
+    volumes:
+      - ${NAS_PATH}/app/src/localhost:/var/www/html
+      - ${NAS_PATH}/app/log/php:/usr/local/var/log
+      - ${NAS_PATH}/app/log/var:/var/log
+      # Your php.ini
+      #- ./php-fpm/php.ini-production:/usr/local/etc/php/php.ini:ro
+      - ${NAS_PATH}/php-fpm/php.ini:/usr/local/etc/php/php.ini:ro
+      - ${NAS_PATH}/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+      - ${NAS_PATH}/php-fpm/php-fpm.d:/usr/local/etc/php-fpm.d:ro
+    environment:
+      - TZ=Asia/Shanghai
+    extra_hosts:
+       - "api_host:192.168.1.155"
+    external_links:
+       - work_mysql_1:mysql
+       - work_redis_1:redis
+    #entrypoint: /usr/local/bin/entrypoint.sh
+networks:
+  work_default:
+    external: true
