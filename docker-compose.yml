@@ -2,6 +2,7 @@ version: '2'
 services:
   # lb
   lb:
+    restart: always
     image: jwilder/nginx-proxy
     ports:
       - "80:80"
@@ -11,6 +12,7 @@ services:
 
   # database
   mysql:
+    restart: always
     image: mysql:5.6
     expose:
       # Allow client to access 3306
@@ -24,6 +26,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
 
   redis:
+      restart: always
       build: ./redis
       expose:
         - "6379"
