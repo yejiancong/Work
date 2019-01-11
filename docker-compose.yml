@@ -14,16 +14,16 @@ services:
   mysql:
     restart: always
     image: mysql:5.6
-    expose:
+    ports:
       # Allow client to access 3306
-      - "3306"
+      - "3306:3306"
     volumes:
       # NOTE: your data will be stored in ./mysql
       - ./app/mysql:/var/lib/mysql
       #- ./mysql:/etc/mysql
     environment:
         #- MYSQL_ROOT_PASSWORD=your_mysql_password
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
   redis:
       restart: always
@@ -33,4 +33,4 @@ services:
       volumes:
         - "./app/redis/data:/data"
       environment:
-        - REDIS_PASSWORD=123456
+        - REDIS_PASSWORD=${REDIS_PASSWORD}
