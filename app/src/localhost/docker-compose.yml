@@ -13,9 +13,6 @@ services:
       # nginx configs
       - ${NAS_PATH}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${NAS_PATH}/app/src/localhost/docker-config/nginx/conf.d/:/etc/nginx/conf.d/:ro
-      # certificates
-      - ${NAS_PATH}/nginx/ca/server.crt/:/etc/nginx/server.crt:ro
-      - ${NAS_PATH}/nginx/ca/server.key/:/etc/nginx/server.key:ro
     environment:
       - TZ=Asia/Shanghai
       - VIRTUAL_HOST=${VIRTUAL_HOST}
@@ -26,7 +23,7 @@ services:
 
   # php-fpm
   fpm:
-    build: ${NAS_PATH}/php-fpm
+    build: ${NAS_PATH}/php-fpm-7.3
     ports:
       - "9000"
     networks:
@@ -46,6 +43,7 @@ services:
        - "api_host:192.168.1.155"
     external_links:
        - work_mysql_1:mysql
+       - work_mysql8_1:mysql8
        - work_redis_1:redis
     #entrypoint: /usr/local/bin/entrypoint.sh
 networks:
