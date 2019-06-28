@@ -27,6 +27,29 @@ services:
         #- MYSQL_ROOT_PASSWORD=your_mysql_password
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
+  # database
+  mysql8:
+    restart: always
+    image: mysql:8.0
+    ports:
+      # Allow client to access 3306
+      - "3308:3306"
+    volumes:
+      # NOTE: your data will be stored in ./mysql
+      - ./app/mysql8:/var/lib/mysql
+      #- ./mysql:/etc/mysql
+    environment:
+        #- MYSQL_ROOT_PASSWORD=your_mysql_password
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M;
+
   redis:
       restart: always
       build: ./redis
@@ -35,4 +58,27 @@ services:
       volumes:
         - "./app/redis/data:/data"
       environment:
+        - TZ=Asia/Shanghai
         - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+  phpredisadmin:
+      image: erikdubbelboer/phpredisadmin
+      environment:
+        - TZ=Asia/Shanghai
+        - ADMIN_USER=admin
+        - ADMIN_PASS=WsRJ34Vpy0RC7MBe
+        - REDIS_1_HOST=redis_host
+        - REDIS_1_PORT=6379
+        - REDIS_1_AUTH=123456
+      external_links:
+        - 'work_redis_1:redis_host'
+      ports:
+        - "8001:80"
+
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8002:8080
+      environment:
+        - TZ=Asia/Shanghai
