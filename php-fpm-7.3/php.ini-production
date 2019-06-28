@@ -258,8 +258,7 @@ output_buffering = 4096
 ; Note: You need to use zlib.output_handler instead of the standard
 ;   output_handler, or otherwise the output will be corrupted.
 ; http://php.net/zlib.output-compression
-;zlib.output_compression = Off
-zlib.output_compression = On
+zlib.output_compression = Off
 
 ; http://php.net/zlib.output-compression-level
 ;zlib.output_compression_level = -1
@@ -659,7 +658,7 @@ auto_globals_jit = On
 ; Its value may be 0 to disable the limit. It is ignored if POST data reading
 ; is disabled through enable_post_data_reading.
 ; http://php.net/post-max-size
-post_max_size = 100M
+post_max_size = 8M
 
 ; Automatically add files before PHP document.
 ; http://php.net/auto-prepend-file
@@ -772,7 +771,7 @@ enable_dl = Off
 ; of zero causes PHP to behave as before.  Default is 1.  You should fix your scripts
 ; to use SCRIPT_FILENAME rather than PATH_TRANSLATED.
 ; http://php.net/cgi.fix-pathinfo
-cgi.fix_pathinfo=0
+;cgi.fix_pathinfo=1
 
 ; FastCGI under IIS (on WINNT based OS) supports the ability to impersonate
 ; security tokens of the calling client.  This allows IIS to define the
@@ -812,7 +811,6 @@ file_uploads = On
 upload_max_filesize = 2M
 
 ; Maximum number of files that can be uploaded via a single request
-;max_file_uploads = 5
 max_file_uploads = 20
 
 ;;;;;;;;;;;;;;;;;;
@@ -926,7 +924,7 @@ cli_server.color = On
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
-date.timezone = Asia/Shanghai
+;date.timezone =
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667
@@ -1876,20 +1874,20 @@ ldap.max_links = -1
 
 [opcache]
 ; Determines if Zend OPCache is enabled
-opcache.enable=1
+;opcache.enable=0
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
-opcache.enable_cli=1
+;opcache.enable_cli=0
 
 ; The OPcache shared memory storage size.
-opcache.memory_consumption=528
+;opcache.memory_consumption=64
 
 ; The amount of memory for interned strings in Mbytes.
-opcache.interned_strings_buffer=8
+;opcache.interned_strings_buffer=4
 
 ; The maximum number of keys (scripts) in the OPcache hash table.
 ; Only numbers between 200 and 100000 are allowed.
-opcache.max_accelerated_files=10000
+;opcache.max_accelerated_files=2000
 
 ; The maximum percentage of "wasted" memory until a restart is scheduled.
 ;opcache.max_wasted_percentage=5
@@ -1907,7 +1905,7 @@ opcache.max_accelerated_files=10000
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
 ; once per request. "0" means always validate)
-opcache.revalidate_freq=1
+;opcache.revalidate_freq=2
 
 ; Enables or disables file search in include_path optimization
 ;opcache.revalidate_path=0
@@ -1922,7 +1920,7 @@ opcache.revalidate_freq=1
 ;opcache.load_comments=1
 
 ; If enabled, a fast shutdown sequence is used for the accelerated code
-opcache.fast_shutdown=1
+;opcache.fast_shutdown=0
 
 ; Allow file existence override (file_exists, etc.) performance feature.
 ;opcache.enable_file_override=0
@@ -1996,9 +1994,3 @@ opcache.fast_shutdown=1
 ; Local Variables:
 ; tab-width: 4
 ; End:
-
-[xdebug]
-xdebug.remote_autostart = 1
-xdebug.remote_connect_back = 1
-xdebug.remote_port = 9000
-xdebug.idekey = zNjqWlRD2IDT16fChx3b

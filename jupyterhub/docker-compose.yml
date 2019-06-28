@@ -1,0 +1,9 @@
+version: "3"
+services:
+  jenkins:
+    image: jupyterhub/jupyterhub
+    container_name: jupyterhub
+    ports:
+    - "8000:8000"
+    - "8001:8001"
+    - "8081:8081"
